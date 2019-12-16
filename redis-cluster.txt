@@ -1,0 +1,35 @@
+windows平台：https://github.com/microsoftarchive/redis/releases/download/win-3.2.100/Redis-x64-3.2.100.zip
+用于起redis实例
+修改配置：
+port 9000
+bind 0.0.0.00
+dir ./
+dbfilename dump_9000.rdb
+cluster-enabled yes
+cluster-config-file nodes-9000.conf
+cluster-require-full-coverage no
+
+cd c:\Users\administrator\Desktop\soft\Redis-x64-3.2.100_9000
+redis-server redis.windows.confg
+
+linux平台：http://download.redis.io/releases.redis-5.0.7.tar.gz
+
+用于常见redis集群
+
+tar -zxvf redis-5.0.7.tar.gz
+cd redis-5.0.7
+make PREFIX=/home/redis install
+cd /home/redis
+./redis-cli --cluster create 10.179.139.125:9000 10.179.139.125:9001 10.179.139.125:9002 10.179.139.125:9003 10.179.139.125:9004 10.179.139.125:9005 --cluster-replicas 1
+
+用于查看redis cluster 信息
+
+./redis-cli -h 10.179.139.125 -p 9000 cluster info #查看集群的信息
+./redis-cli -h 10.179.139.125 -p 9000 cluster nodes
+./redis-cli -h 10.179.139.125 -p 9000 
+
+demo url: https://github.com/hxf044/redisCluster
+
+遗留问题：
+首次：主redis实例挂了，备redis会顶上，业务继续
+原主redis恢复，查询也是master，需要将两个都关闭，重新拉起，才能恢复为 原来的主备关系
